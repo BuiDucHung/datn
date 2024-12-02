@@ -1,0 +1,24 @@
+@import 'src/styles/mixins.scss';
+.ks-button {
+  padding: 0 5px;
+  &.ks-text-large {
+    @include ks-text-body1-w700;
+  }
+
+  &.ks-text-medium {
+    @include ks-text-body2-w600;
+  }
+
+  &.ks-text-small {
+    @include ks-text-body2-w400;
+  }
+
+  &.ks-button-ok {
+    background-image: var(--ks-product-color-btn1);
+    color: var(--ks-white-color-default);
+  }
+
+  &.ks-button-cancel {
+    background-color: var(--ks-secondary-color-main);
+  }
+}

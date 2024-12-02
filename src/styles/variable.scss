@@ -1,0 +1,88 @@
+:root {
+  --ks-primary-color-main: #1579ad;
+  --ks-secondary-color-main: #feb415;
+  --ks-tertiary-color-main: #ffe9e2;
+  --ks-body-color-main: #747c87;
+  --ks-text-default-1: #000000;
+  --ks-text-default-2: #ffffff;
+  --ks-border-color-main: #ebebeb;
+  --ks-success-color-default: #0ec122;
+  --ks-warning-color-default: #ffc107;
+  --ks-info-color-default: #0d6efd;
+  --ks-error-color-default: #ef5350;
+  --ks-black-color-default: #000000;
+  --ks-white-color-default: #ffffff;
+  --ks-grey-color-default: #808080;
+  --ks-background-color-main: #ffffff;
+  --ks-background-color-2: #ecf8ff;
+  --ks-background-color-3: #fff1d3;
+  --ks-background-color-4: #f4f7fb;
+  --ks-product-color-btn1: #1579ad;
+  --ks-product-color-btn2: #ff7a30;
+  --ks-product-color-tab-1: #0ea5e9;
+  --ks-product-color-tab-2: #f000b9;
+  --ks-product-color-tab-3: #ff5c00;
+  --ks-product-color-tab-4: #b9a185;
+  --ks-product-color-background-success: #f0fff1;
+  --ks-product-color-status-waiting: #ff9800;
+  --ks-product-color-live-stream: #e04f5f;
+  --ks-product-color-time-statistics: #d43b37;
+  --ks-product-color-visit-baithi: #6dc06d;
+  --ks-product-color-visit-tailieu: #fbc902;
+  --ks-product-color-visit-baigiang: #e0625f;
+  --ks-product-color-visit-baitap: #fbae46;
+  --ks-product-color-chart-line-1: #e0625f;
+  --ks-product-color-chart-line-2: #fbae46;
+  --ks-product-color-info-test-1: #98c7ff - #ffffff - #ffffff;
+  --ks-product-color-gradient-chart-column-hoz: #2381b9 - #6ac6ff;
+  --ks-product-color-gradient-chart-column-ver: #2381b9 - #6ac6ff;
+  --ks-product-color-gradient-chart-column-ver-2: #d96bbb - #ffcaf1;
+  --ks-shadow-inset: inset 0 1px 2px rgba(0, 0, 0, 0.075);
+  --ks-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  --ks-shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  --ks-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+  --ks-shadow-custom-1: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  --ks-shadow-custom-2: 0px -2px 4px 0px #00000014;
+
+  .ant-checkbox-checked {
+    .ant-checkbox-inner {
+      background-color: var(--ks-primary-color-main);
+      border-color: var(--ks-primary-color-main);
+    }
+
+    &:hover {
+      background-color: var(--ks-primary-color-main);
+      border-color: var(--ks-primary-color-main);
+      opacity: 0.9;
+    }
+  }
+
+  .ant-checkbox-indeterminate {
+    .ant-checkbox-inner {
+      border-color: var(--ks-primary-color-main) !important;
+
+      &::after {
+        background-color: var(--ks-primary-color-main);
+      }
+    }
+  }
+
+  .ant-checkbox-wrapper {
+    &:hover {
+      .ant-checkbox-inner {
+        border-color: var(--ks-primary-color-main) !important;
+      }
+
+      .ant-checkbox-checked {
+        .ant-checkbox-inner {
+          background-color: var(--ks-primary-color-main) !important;
+        }
+      }
+    }
+
+    .ant-checkbox-inner {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}

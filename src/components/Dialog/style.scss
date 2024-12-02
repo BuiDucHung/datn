@@ -1,0 +1,28 @@
+@import 'src/styles/mixins.scss';
+
+.ks-dialog-style-center {
+  box-shadow: var(--ks-shadow-custom-1);
+  border-radius: 8px;
+  padding: 0;
+
+  .ant-modal-close {
+    border-radius: 50%;
+    // background-color: var(--ks-secondary-color-main);
+    border: none;
+  }
+
+  .ant-modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+
+    .ant-modal-body {
+      width: 100%;
+    }
+  }
+
+  .ant-modal-title {
+    @include ks-text-body1-w700;
+  }
+}

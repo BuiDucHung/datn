@@ -1,0 +1,31 @@
+@import url("https://pro.fontawesome.com/releases/v5.15.4/css/all.css");
+@import "./mixins.scss";
+
+* {
+  box-sizing: border-box;
+  font-family: SVN-Poppins !important;
+}
+
+:root {
+  --core-text-color: #333;
+  --primary-color: #e10422;
+}
+
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 130px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  @include custom-scroll();
+}
+
+.disable-user-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
