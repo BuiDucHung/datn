@@ -109,7 +109,7 @@ const UploadFileModal = (props: {
             obj.push(objItem);
           });
           exportDataToExcel(obj, 'flashcard');
-        } else if (type == 8) {
+        } else if (type === 8) {
           paragraphs = await splitParagraphs(xml, zip, relationShipElements);
           exportFileWordtoExcel(paragraphs)
         } else if(type === 9) {

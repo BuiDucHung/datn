@@ -107,7 +107,7 @@ export const exportFileWordtoExcel = (data) => {
     spacedData.push([]);
   });
   const converted = formattedData.map(item => {
-    const result = item[4].replace(/(<br>)/g, '$1"');
+    const result = item[4]?.replace(/(<br>)/g, '$1"');
     const firstLine = item[0]
       .replace(/^\d+\.\s*/, '#.') // Thay số và dấu chấm, xóa khoảng trắng sau đó
       .toLowerCase()
