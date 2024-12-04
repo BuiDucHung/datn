@@ -52,21 +52,106 @@ export function convertTableToHTML(table) {
   return `<table style="border:1px solid black; border-collapse:collapse;">${htmlTable}</table>`;
 }
 
+
+// export function convertTableToHTMLUpdate(table) {
+//   let htmlTable = '';
+
+//   table?.forEach((row) => {
+//     let englishContent = '';
+//     let vietnameseContent = '';
+
+//     row.forEach((data) => {
+//       let htmlData = '';
+//       data.forEach((paragraph) => {
+//         let htmlParagraph = '';
+//         paragraph?.component?.forEach((subPara) => {
+//           htmlParagraph += convertContentToHtml(subPara);
+//         });
+//         htmlData += `<br>${htmlParagraph}`;
+//       });
+
+//       // Tách nội dung theo thẻ <br>
+//       const rows = htmlData.split('<br>');
+//       rows.forEach((rowContent, index) => {
+//         if (rowContent.trim()) {
+//           // Kiểm tra nếu chứa <ins>, thay thế thành thẻ <a>
+//           if (rowContent.includes('<ins>')) {
+//             rowContent = rowContent.replace(/<ins>(.*?)<\/ins>/g, (match, p1) => {
+//               const link = p1.trim();
+//               return `<a href="https://${link}" style="color: #1155cc; padding-left: 4px" target="_blank">${link}</a>`;
+//             });
+//           }
+
+//           // Kiểm tra nếu nội dung chứa "DỊCH BÀI"
+//           if (rowContent.includes('DỊCH BÀI')) {
+//             htmlTable += `<tr style="border:1px solid black;">
+//               <td style="border:1px solid black; padding: 16px; color:#0563c1; text-align: center" colspan="2">${rowContent}</td>
+//             </tr>`;
+//           } else {
+//             // Chia thành hai cột, 1 cột tiếng Anh và 1 cột tiếng Việt
+//             if (index % 2 === 0) {
+//               englishContent = rowContent; // Lưu tiếng Anh
+//             } else {
+//               vietnameseContent = rowContent; // Lưu tiếng Việt
+
+//               // Nếu cả hai tiếng Anh và tiếng Việt đều có nội dung
+//               if (englishContent && vietnameseContent) {
+//                 htmlTable += `<tr style="border:1px solid black;">
+//                   <td style="border:1px solid black; padding: 16px; width: 321px;">${englishContent}</td>
+//                   <td style="border:1px solid black; padding: 16px; width: 321px;">${vietnameseContent}</td>
+//                 </tr>`;
+//                 englishContent = '';  // Reset tiếng Anh sau khi thêm vào bảng
+//                 vietnameseContent = '';  // Reset tiếng Việt sau khi thêm vào bảng
+//               }
+//             }
+//           }
+//         }
+//       });
+//     });
+//   });
+
+//   console.log('htmlTable', htmlTable);
+//   return `<table style="border:1px solid black; border-collapse:collapse;">${htmlTable}</table>`;
+// }
+
 export function convertTableToHTMLUpdate(table) {
   let htmlTable = '';
+  // const items = splitTextAndKeepStructure(table)
+  // console.log('table', table);
+  
   table?.forEach((row) => {
     let htmlRow = '';
-    let htmlData = '';
-    let htmlParagraph = '';
-    row?.component?.forEach((subPara) => {
-      htmlParagraph += convertContentToHtml(subPara);
-    })
-    htmlData += `<br>${htmlParagraph}`;
-    htmlRow += `<td style="border:1px solid black; padding: 16px">${htmlData}</td>`;
-    htmlTable += `<tr style="border:1px solid black;">${htmlRow}</tr>`;
+    row.forEach((data) => {
+      let htmlData = '';
+      data.forEach((paragraph) => {
+        let htmlParagraph = '';
+        paragraph?.component?.forEach((subPara) => {
+          htmlParagraph += convertContentToHtml(subPara);
+        });
+        htmlData += `<br>${htmlParagraph}`;
+      });
+      // Kiểm tra nếu htmlData có chứa "DỊCH BÀI"
+      // Kiểm tra nếu htmlData có chứa thẻ <ins>
+      if (htmlData.includes('<ins>')) {
+        // Sử dụng regex để thay thế <ins> bằng <a> có liên kết
+        htmlData = htmlData.replace(/<ins>(.*?)<\/ins>/g, (match, p1) => {
+          const link = p1.trim(); // Lấy nội dung bên trong thẻ <ins>
+          return `<a href="https://${link}" style="color: #1155cc; padding-left: 4px" target="_blank">${link}</a>`;
+        });
+      }
+      if (htmlData.includes('DỊCH BÀI')) {
+        htmlRow += `<td style="border:1px solid black; padding: 16px; color:#0563c1; text-align: center" colspan="2">${htmlData}</td>`;
+      } else {
+        const rowItem = htmlData.split('<br>');
+        const filterRow = rowItem.filter(f => f !== '');
+        htmlRow += `<td style="border:1px solid black; padding: 16px; width: 321px">${htmlData}</td>`;
+      }
+    });
+    htmlTable += `<tr style="border:1px solid black;">${htmlRow}</tr>`;    
   });
   return `<table style="border:1px solid black; border-collapse:collapse;">${htmlTable}</table>`;
 }
+
 
 export function convertQuestionToHTML(_question) {
   const { question, answers, solution, child, correctAnswer } = _question;
@@ -138,12 +223,10 @@ export function convertQuestionToHTMLUPDATE(_question) {
   let htmlExplain = '';
 
   // tách ra phần dịch riêng 
-  if(explain) {
+  if (explain) {
     explain.forEach((paragraph) => {
       let htmlPara = '';
-      paragraph?.forEach((subParagraph) => {
-        htmlPara += convertTableToHTMLUpdate(subParagraph);
-      });
+      htmlPara += convertTableToHTMLUpdate(paragraph);
       htmlExplain += `${htmlPara}<br>`;
     });
   }

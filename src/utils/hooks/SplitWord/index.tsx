@@ -413,17 +413,29 @@ export const detectCorrectAnswerInChoiceQuestionUpdate = (questions) => {
         return qPart.filter((component) => {
           return !component.table;
         });
-      }).filter((qPart) => qPart.length > 0);;
+      }).filter((qPart) => qPart.length > 0);
 
       if (question?.question?.length) {
         question?.question.map((qPart) => {
-          qPart.filter((component) => {
-            component.table?.forEach((section) => {
-              if (section.length === 2) {
-                explain.push(section)
-              }
-            })
-          })
+          qPart
+            .filter((component) => component.table !== undefined) // Chỉ giữ phần tử có `table`
+            .forEach((component) => {
+              explain.push(component.table); 
+              // component.table.forEach((section) => {
+              //   if (section.length === 2) {
+              //     explain.push(section); // Đẩy vào `explain` nếu `section` có độ dài là 2
+              //   }
+              // });
+            });
+
+          // qPart.filter((component) => {
+          //   console.log(component.table);
+          //   component.table?.forEach((section) => {
+          //     if (section.length === 2) {
+          //       explain.push(section)
+          //     }
+          //   })
+          // })
         })
       }
       if (answers?.length) {
