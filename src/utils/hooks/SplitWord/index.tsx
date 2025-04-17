@@ -73,6 +73,13 @@ export function getTypeText(style) {
   return NORMAL_TEXT;
 }
 
+const answerCorrect = [
+  { id: 0, value: 'A' },
+  { id: 1, value: 'B' },
+  { id: 2, value: 'C' },
+  { id: 3, value: 'D' }
+]
+
 // xu li bai toan tai 1 doan van:
 export async function getComponentInParagraph(paragraphsElement, zip, relationShipElements) {
   const paragraph: Paragraph[] = [];
@@ -353,7 +360,7 @@ export function convertQuestionToHTML(_question) {
 export function detectCorrectAnswerInChoiceQuestion(questions) {
   return questions.map((question) => {
     if (question?.answers?.length || question?.child?.length) {
-      const { answers, child, ...remain } = question;
+      const { answers, child, solution, ...remain } = question;
       const newChild = child?.length ? detectCorrectAnswerInChoiceQuestion(child) : child;
       let correctAnswer = '';
       if (answers?.length) {
@@ -381,6 +388,16 @@ export function detectCorrectAnswerInChoiceQuestion(questions) {
           }
           return newAnswer;
         });
+        // nếu mà trong biến correctAnswer ko lấy dc cái index đáp án đúng thì se giựa vào đáp án trong phần giải để bắt lấy đáp án đúng 
+        if(correctAnswer === '') {
+          // nếu mà trong mảng đáp án có 5 item và item đầu lấy đề bài cần tách chỉ lấy đáp án và đáp án chính xác
+          const correctAnswers = solution
+          .flatMap(row => row)
+          .find(item => item.content?.startsWith("→ Chọn đáp án"))
+          ?.content?.match(/→ Chọn đáp án\s*([A-D])/i)?.[1];
+          const detailAnswer = answerCorrect.find(f => f?.value === correctAnswers);
+          correctAnswer = String(detailAnswer?.id)
+        }
         return {
           ...remain,
           answers: newAnswers,
@@ -402,13 +419,12 @@ export function detectCorrectAnswerInChoiceQuestion(questions) {
 // hàm của me
 export const detectCorrectAnswerInChoiceQuestionUpdate = (questions) => {
 
-  return questions.map((question) => {
+  const newQuestion = questions.map((question) => {
     if (question?.answers?.length || question?.child?.length) {
       const { answers, child, ...remain } = question;
       const newChild = child?.length ? detectCorrectAnswerInChoiceQuestion(child) : child;
       let correctAnswer = '';
       let explain = [];
-
       const newquestionContent = question?.question.map((qPart) => {
         return qPart.filter((component) => {
           return !component.table;
@@ -438,6 +454,7 @@ export const detectCorrectAnswerInChoiceQuestionUpdate = (questions) => {
           // })
         })
       }
+
       if (answers?.length) {
         const newAnswers = answers.map((answer, index) => {
           const newAnswer = {
@@ -463,6 +480,7 @@ export const detectCorrectAnswerInChoiceQuestionUpdate = (questions) => {
           }
           return newAnswer;
         });
+
         return {
           ...remain,
           answers: newAnswers,
@@ -482,6 +500,8 @@ export const detectCorrectAnswerInChoiceQuestionUpdate = (questions) => {
     }
     return question
   });
+
+  return newQuestion
 
 
   // return questions.map((question) => {
