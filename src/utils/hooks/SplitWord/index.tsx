@@ -392,7 +392,7 @@ export function detectCorrectAnswerInChoiceQuestion(questions) {
         if(correctAnswer === '') {
           // nếu mà trong mảng đáp án có 5 item và item đầu lấy đề bài cần tách chỉ lấy đáp án và đáp án chính xác
           const correctAnswers = solution
-          .flatMap(row => row)
+          ?.flatMap(row => row)
           .find(item => item.content?.startsWith("→ Chọn đáp án"))
           ?.content?.match(/→ Chọn đáp án\s*([A-D])/i)?.[1];
           const detailAnswer = answerCorrect.find(f => f?.value === correctAnswers);
@@ -400,6 +400,7 @@ export function detectCorrectAnswerInChoiceQuestion(questions) {
         }
         return {
           ...remain,
+          solution: question?.solution,
           answers: newAnswers,
           correctAnswer: !!correctAnswer ? correctAnswer : null,
           child: newChild
@@ -480,7 +481,6 @@ export const detectCorrectAnswerInChoiceQuestionUpdate = (questions) => {
           }
           return newAnswer;
         });
-
         return {
           ...remain,
           answers: newAnswers,

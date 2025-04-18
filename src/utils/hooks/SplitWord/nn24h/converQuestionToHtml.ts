@@ -471,19 +471,30 @@ export function convertQuestionToFormatQuestionNN24h(_question: Question | any) 
 
   if (solution && solution.length) {
     const table = (solution as unknown as [{ table: Table }])[0][0].table;
-    if (table[0].length === 1) {
+    
+    //check nếu hướng dẫn giải là dịch bào thì push vào solution
+    const hasDichBai = table
+    .flat(2) // làm phẳng xuống cấp có object { text, component }
+    .some(item => item.text === 'DỊCH BÀI');
+
+    if(hasDichBai) {
+      const mapped = table.flat(2).map(item =>
+        item.component.map(c => ({ type: c.type, content: c.content }))
+      );
+      newQuestion.solution = mapped
+    } else if (table[0].length === 1) {
       const row = table[0];
       const data = row[0];
       const [first, ...rest] = data;
       const firstPara = first.component;
-
       const [firstComponent, ...component] = firstPara;
       const newFirst = {
         type: firstComponent.type,
-        content: firstComponent.content.replace(/Hướng dẫn giải/, '')
+        content: firstComponent.content
       };
       newQuestion.solution = [[newFirst, ...component], ...rest?.map((para) => para.component)];
-    } else {
+    }
+    else {
       newQuestion.solution = solution;
     }
   }
